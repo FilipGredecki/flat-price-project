@@ -68,7 +68,6 @@ def remove_county_from_address(address_list, state):
                 # dopasowanie całego słowa
                 pattern = r'\b' + re.escape(part.strip().lower()) + r'\b'
                 if re.search(pattern, county_name):
-                    print(part)
                     address_list.remove(part)
                     return  # KONIEC — usuwamy tylko jeden powiat
 
@@ -118,28 +117,28 @@ def select_city_with_district(possible_cities, address_list, state):
     return '', ''
 
 def parse_address(address):
-    assigned = AddressClass()
-    address_list = extract_street(address, assigned)
+    assigned_address = AddressClass()
+    address_list = extract_street(address, assigned_address)
 
     # 1. znajdź województwo
     voiv = find_voivodeship(address_list)
     if voiv:
-        assigned.state = voiv
+        assigned_address.state = voiv
         address_list.remove(voiv)
     
     # 2. usuń powiaty z listy adresu
-    remove_county_from_address(address_list, assigned.state)
+    remove_county_from_address(address_list, assigned_address.state)
     
 
     # 3. znajdź możliwe miasta
-    possible_cities = find_possible_cities(address_list, assigned.state)
+    possible_cities = find_possible_cities(address_list, assigned_address.state)
 
     # 4. wybierz miasto i dzielnicę
-    city_name, district = select_city_with_district(possible_cities, address_list, assigned.state)
-    assigned.city = city_name
-    assigned.district = district
+    city_name, district = select_city_with_district(possible_cities, address_list, assigned_address.state)
+    assigned_address.city = city_name
+    assigned_address.district = district
 
-    return assigned
+    return assigned_address
 
 # if __name__ == "__main__":
 #     address = "ul.tulipanowa ,koniuchy, toruń, toruński, kujawsko-pomorskie".lower()

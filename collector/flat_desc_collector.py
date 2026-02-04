@@ -54,10 +54,10 @@ LABEL_TO_ATTR = {
     'Powierzchnia:': 'home_area'
 }
 
-def flat_desc_collecting(url):
+def flat_desc_collecting(url, header):
     # with open(file_name, 'r', encoding="utf-8", errors="ignore") as f:
     #     response = f.read()
-    response = requests.get(url, headers=HEADER)
+    response = requests.get(url, headers=header)
 
 
     soup = BeautifulSoup(response.text, 'lxml')
@@ -80,4 +80,3 @@ def flat_desc_collecting(url):
     flat_description.separate_floor()
     return flat_description
 
-print(flat_desc_collecting(r'https://www.otodom.pl/pl/oferta/mieszkanie-taras-25m2-ID4zk5b'))
