@@ -19,6 +19,18 @@ flat_data_frame['home_area'] = flat_data_frame['home_area'].astype('float')
 # print(f'home_area: {flat_data_frame['home_area'].dtype}')
 
 """
+state: encoding and changign dtype
+"""
+print(flat_data_frame['state'].unique())
+state_encoder = LabelEncoder()
+state_encoder.fit(flat_data_frame['state'])
+flat_data_frame['state'] = state_encoder.transform(flat_data_frame['state'])
+flat_data_frame['state'] = flat_data_frame['state'].astype(int)
+joblib.dump(state_encoder,'encoders/state_encoder.pkl')
+print(flat_data_frame['state'].unique())
+print(f'state: {flat_data_frame['state'].dtype}')
+
+"""
 rooms_count: prepraing and dtype
 """
 # print(flat_data_frame['rooms_count'].unique())
@@ -92,4 +104,5 @@ flat_data_frame['elevator'] = flat_data_frame['elevator'].replace({'nie': 0,'tak
 flat_data_frame['elevator'] = flat_data_frame['elevator'].astype(int)
 # print(flat_data_frame['elevator'].unique())
 # print(f'elevator: {flat_data_frame['elevator'].dtype}')
+
 flat_data_frame.to_csv('csv_folder/half_prepared.csv', sep=';',index=False)
